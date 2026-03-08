@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, LiveServerMessage, Modality, Blob } from '@google/genai';
+import { getApiKey } from '../services/geminiService';
 import { CloseIcon } from './icons/CloseIcon';
 import { CameraIcon } from './icons/CameraIcon';
 import { MicroIcon } from './icons/MicroIcon';
@@ -118,7 +119,7 @@ export const CameraVoiceAssistant: React.FC<CameraVoiceAssistantProps> = ({ onCl
         streamRef.current = stream;
         if (videoRef.current) videoRef.current.srcObject = stream;
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: getApiKey() });
         
         audioContextInRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
         audioContextOutRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });

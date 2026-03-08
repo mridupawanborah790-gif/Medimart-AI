@@ -28,9 +28,14 @@ const fileToGenerativePart = async (file: File) => {
   };
 };
 
-const getApiKey = () => {
-  // Use globalThis to avoid build-time replacement issues
-  return (globalThis as any).process?.env?.API_KEY || (globalThis as any).process?.env?.GEMINI_API_KEY || '';
+export const getApiKey = () => {
+  // Use import.meta.env for Vite environment variables
+  // Standard Vite practice is to prefix with VITE_
+  return (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+         (import.meta as any).env?.VITE_API_KEY ||
+         (globalThis as any).process?.env?.API_KEY || 
+         (globalThis as any).process?.env?.GEMINI_API_KEY || 
+         '';
 };
 
 export const runQuery = async (prompt: string, file: File | null) => {
