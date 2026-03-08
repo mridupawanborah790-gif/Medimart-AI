@@ -89,15 +89,26 @@ const App: React.FC = () => {
     const placeholderId = generateUniqueId();
     setMessages(prev => [...prev, { id: placeholderId, role: 'model', parts: [{ text: '' }], timestamp: new Date(), isLoading: true }]);
 
+    let accumulatedText = '';
     try {
       const response = await runQuery(text, file);
-      let accumulatedText = '';
       
-      // In @google/genai, the response object contains a 'stream' property which is the async iterable
-      for await (const chunk of (response as any).stream || response) {
+      // Use the .stream property or fallback to the response itself
+      const stream = (response as any).stream || response;
+      
+      for await (const chunk of stream) {
         try {
-          // text is a getter property in this SDK, not a function
-          const chunkText = chunk.text || '';
+          // In the Unified SDK, chunk.text is a getter that can throw if the response is blocked
+          // We use a safer check to avoid crashing the render loop
+          let chunkText = '';
+          try {
+             chunkText = chunk.text || '';
+          } catch (textErr) {
+             console.warn('Chunk text blocked or unavailable:', textErr);
+             // If we already have some text, we just stop here rather than crashing
+             continue; 
+          }
+
           if (chunkText) {
             accumulatedText += chunkText;
             
@@ -116,13 +127,18 @@ const App: React.FC = () => {
     } catch (error: any) {
       console.error('Error from Gemini API:', error);
       
-      // Handle race condition or invalid key selection
-      if (error.message?.includes('Requested entity was not found')) {
+      // Only setHasKey(false) if we haven't received any content yet 
+      // This prevents the screen from blanking out mid-conversation
+      if (error.message?.includes('Requested entity was not found') && !accumulatedText) {
         setHasKey(false);
         return;
       }
 
       let errorText = 'Sorry, I encountered an error. Please try again.';
+      if (error.message?.includes('finishReason')) {
+         errorText = 'The response was interrupted for safety or technical reasons. Please try a different prompt.';
+      }
+      
       const isPermissionError = error.message?.toLowerCase().includes('permission') || error.message?.toLowerCase().includes('403');
       
       if (isPermissionError) {
