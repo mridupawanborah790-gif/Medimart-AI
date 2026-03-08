@@ -90,13 +90,28 @@ const App: React.FC = () => {
     setMessages(prev => [...prev, { id: placeholderId, role: 'model', parts: [{ text: '' }], timestamp: new Date(), isLoading: true }]);
 
     try {
-      const stream = await runQuery(text, file);
-      let fullResponse = '';
-      for await (const chunk of stream) {
-        fullResponse += chunk.text;
-        setMessages(prev => prev.map(msg => 
-            msg.id === placeholderId ? { ...msg, parts: [{ text: fullResponse }], isLoading: false } : msg
-        ));
+      const response = await runQuery(text, file);
+      let accumulatedText = '';
+      
+      // In @google/genai, the response object contains a 'stream' property which is the async iterable
+      for await (const chunk of (response as any).stream || response) {
+        try {
+          // text is a getter property in this SDK, not a function
+          const chunkText = chunk.text || '';
+          if (chunkText) {
+            accumulatedText += chunkText;
+            
+            setMessages(currentMessages => 
+              currentMessages.map(msg => 
+                msg.id === placeholderId 
+                  ? { ...msg, parts: [{ text: accumulatedText }], isLoading: false } 
+                  : msg
+              )
+            );
+          }
+        } catch (e) {
+          console.warn('Error processing chunk:', e);
+        }
       }
     } catch (error: any) {
       console.error('Error from Gemini API:', error);
