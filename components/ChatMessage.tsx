@@ -20,10 +20,10 @@ interface ChatMessageProps {
 }
 
 const renderer = new marked.Renderer();
-const originalLinkRenderer = renderer.link;
-renderer.link = ({ href, title, text }) => {
-  const html = originalLinkRenderer.call(renderer, { href, title, text });
-  return html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer" class="font-bold" ');
+const originalLinkRenderer = renderer.link.bind(renderer);
+renderer.link = (token) => {
+  const html = originalLinkRenderer(token);
+  return html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer" class="font-bold text-green-600 underline" ');
 };
 marked.setOptions({
   renderer,
@@ -68,7 +68,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLoading, on
               </div>
           ) : (
             <>
-              {message.parts[0].text && (
+              {message.parts && message.parts.length > 0 && message.parts[0]?.text && (
                  <div 
                     className="prose-chat prose-sm max-w-none"
                     dangerouslySetInnerHTML={createMarkup(message.parts[0].text)} 
