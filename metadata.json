@@ -1,0 +1,9 @@
+{
+  "name": "Medimart AI",
+  "description": "A conversational medical assistant that can analyze medical documents, provide medicine-related guidance, and locate healthcare providers. It uses Gemini for advanced reasoning and multi-modal analysis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

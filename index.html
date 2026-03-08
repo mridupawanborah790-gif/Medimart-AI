@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content" />
+    <title>Medimart AI - Medical Assistant</title>
+    <script>
+      window.process = window.process || { env: {} };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --brand-green: #00A878;
+        --brand-green-light: #d9f7ef;
+        --bg-color: #f0f2f5; 
+        --shadow-light: #ffffff;
+        --shadow-dark: #d1d9e6;
+        --text-dark: #334155;
+        --text-light: #64748b;
+      }
+
+      html, body {
+        height: 100dvh;
+        width: 100%;
+        overflow: hidden; 
+        overscroll-behavior: none; 
+      }
+
+      body {
+        background-color: var(--bg-color);
+        font-family: 'Manrope', sans-serif;
+        background-image: 
+          radial-gradient(circle at 10% 10%, rgba(0, 168, 120, 0.1), transparent 30%),
+          radial-gradient(circle at 90% 80%, rgba(0, 168, 120, 0.15), transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5), transparent 30%);
+        background-attachment: fixed;
+      }
+
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #c1c9d2; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #a8b1bc; }
+
+      .font-assamese {
+        font-family: 'Noto Sans Bengali', sans-serif;
+      }
+
+      .neumorphic-convex {
+        border-radius: 20px;
+        background: var(--bg-color);
+        box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+        transition: all 0.2s ease-in-out;
+      }
+      .neumorphic-convex:active, .neumorphic-convex.pressed {
+        box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+      }
+
+      .neumorphic-concave {
+        border-radius: 12px;
+        background: var(--bg-color);
+        box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+      }
+
+      .glassmorphism {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .chat-bubble-model {
+        background: rgba(217, 247, 239, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: var(--text-dark);
+        border-radius: 18px 18px 18px 4px;
+        box-shadow: 4px 4px 12px rgba(0, 168, 120, 0.1), 
+                    -4px -4px 12px rgba(255, 255, 255, 0.7);
+        padding: 14px 18px;
+        border: 1px solid rgba(0, 168, 120, 0.15);
+      }
+      
+      .chat-bubble-user {
+        background: linear-gradient(145deg, #e6eef8, #ffffff);
+        color: var(--text-dark);
+        border-radius: 18px 18px 4px 18px;
+        box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+        padding: 14px 18px;
+      }
+
+      .prose-chat p, .prose-chat ul, .prose-chat ol {
+        color: inherit !important;
+        font-size: 1.1rem; 
+        line-height: 1.6;
+        font-weight: 500;
+      }
+       .prose-chat a {
+        color: var(--brand-green) !important;
+        text-decoration: underline;
+      }
+      .prose-chat strong {
+        color: inherit !important;
+      }
+      .chat-bubble-user .prose-chat a {
+        color: #007BFF !important;
+      }
+
+      /* Watermark Specific Styles */
+      .app-watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 400px;
+        aspect-ratio: 1/1;
+        opacity: 0.04;
+        background-image: url('https://raw.githubusercontent.com/Ankur27D/Medimart-AI/main/medimart_logo.png'); /* Using a likely URL based on your provided context, or fall back to an internal reference */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        filter: grayscale(1);
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "marked": "https://aistudiocdn.com/marked@^17.0.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
