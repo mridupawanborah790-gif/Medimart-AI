@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FilterCriteria } from '../types';
 import { CloseIcon } from './icons/CloseIcon';
-import { FilterIcon } from './icons/FilterIcon';
 import { MapPinIcon } from './icons/MapPinIcon';
 import { UserIcon } from './icons/UserIcon';
 import { HospitalIcon } from './icons/HospitalIcon';
@@ -57,24 +56,24 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onSea
 
   return (
     <div 
-      className={`fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 backdrop-blur-md p-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
       onClick={onClose}
     >
       <div 
-        className={`w-[95%] max-w-md glassmorphism rounded-2xl shadow-2xl transition-transform duration-300 ${isVisible ? 'scale-100' : 'scale-95'}`}
+        className={`w-full max-w-sm rounded-3xl border border-slate-100 bg-white/95 shadow-[0_24px_70px_-32px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-all duration-300 ${isVisible ? 'scale-100 translate-y-0' : 'scale-95 translate-y-2'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b border-white/20">
-          <div className="flex items-center gap-2">
-            <FilterIcon className="w-6 h-6 text-green-600" />
-            <h2 className="text-lg font-bold text-slate-800">Find a Doctor</h2>
+        <div className="flex items-center justify-between px-6 pt-6 pb-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600/80">Medimart AI</p>
+            <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Find a Doctor</h2>
           </div>
-          <button onClick={onClose} className="p-2 rounded-full text-slate-500 hover:bg-white/50">
+          <button onClick={onClose} className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
             <CloseIcon className="w-5 h-5" />
           </button>
         </div>
         
-        <div className="p-5 space-y-4 max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[65vh] space-y-4 overflow-y-auto px-6 pb-6">
           
           {[
             { id: 'doctorName', label: 'Doctor Name', value: doctorName, setter: setDoctorName, placeholder: 'e.g., Dr. Jane Doe', icon: UserIcon },
@@ -83,52 +82,52 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onSea
             { id: 'specialty', label: 'Specialty', value: specialty, setter: setSpecialty, placeholder: 'e.g., Cardiologist', icon: StethoscopeIcon },
           ].map(field => (
             <div key={field.id}>
-              <label htmlFor={field.id} className="block text-sm font-semibold text-slate-700 mb-1">
+              <label htmlFor={field.id} className="mb-1.5 block text-sm font-medium text-slate-700">
                 {field.label}
               </label>
-              <div className="relative neumorphic-concave p-1">
-                <field.icon className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"/>
+              <div className="relative">
+                <field.icon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"/>
                 <input 
                   type="text" 
                   id={field.id} 
                   value={field.value}
                   onChange={(e) => field.setter(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 bg-transparent border-0 rounded-md focus:outline-none focus:ring-0 text-slate-800 placeholder-slate-400 text-base"
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-10 py-3 text-base text-slate-800 placeholder-slate-400 shadow-[0_1px_0_rgba(255,255,255,0.8)_inset,0_8px_20px_-18px_rgba(15,23,42,0.55)] transition-all focus:border-emerald-300 focus:outline-none focus:ring-4 focus:ring-emerald-100"
                   placeholder={field.placeholder}
                   style={{ fontSize: '16px' }}
                 />
               </div>
-               {field.id === 'location' && <p className="text-xs text-slate-500 mt-1">Leave blank to use device location.</p>}
+               {field.id === 'location' && <p className="mt-1.5 text-xs text-slate-500">Leave blank to use your current location.</p>}
             </div>
           ))}
 
-          <div className="flex items-center pt-2">
+          <label htmlFor="availableNow" className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5">
             <input 
               id="availableNow" 
               type="checkbox" 
               checked={availableNow}
               onChange={(e) => setAvailableNow(e.target.checked)}
-              className="h-5 w-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500"
+              className="h-5 w-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
             />
-            <label htmlFor="availableNow" className="ml-2 block text-sm font-semibold text-slate-800">
+            <span className="text-sm font-medium text-slate-800">
               Available Now
-            </label>
+            </span>
+          </label>
+
+          <div className="flex items-center justify-end gap-3 pt-2">
+            <button 
+              onClick={handleReset} 
+              className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50"
+            >
+              Reset
+            </button>
+            <button 
+              onClick={handleSearchClick}
+              className="rounded-full bg-emerald-500 px-8 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_-12px_rgba(16,185,129,0.9)] transition-all hover:bg-emerald-600 active:scale-[0.99]"
+            >
+              Search
+            </button>
           </div>
-        </div>
-        
-        <div className="flex items-center justify-end gap-3 p-4 border-t border-white/20 rounded-b-xl">
-          <button 
-            onClick={handleReset} 
-            className="px-5 py-2.5 text-sm font-bold text-slate-700 neumorphic-convex"
-          >
-            Reset
-          </button>
-          <button 
-            onClick={handleSearchClick}
-            className="px-8 py-2.5 text-sm font-bold text-white bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-lg hover:shadow-xl active:shadow-inner transition-all"
-          >
-            Search
-          </button>
         </div>
       </div>
     </div>
