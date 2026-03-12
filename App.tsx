@@ -6,7 +6,6 @@ import { ChatMessage } from './components/ChatMessage';
 import { runQuery, findDoctors as findDoctorsService, translateToAssamese, generateComparisonImage } from './services/geminiService';
 import { MapPinIcon } from './components/icons/MapPinIcon';
 import { FilterModal } from './components/FilterModal';
-import { SmileIcon } from './components/icons/SmileIcon';
 import { SuggestionModal } from './components/SuggestionModal';
 import { LightbulbIcon } from './components/icons/LightbulbIcon';
 import { ImageViewerModal } from './components/ImageViewerModal';
@@ -33,7 +32,7 @@ const App: React.FC = () => {
     {
       id: generateUniqueId(),
       role: 'model',
-      parts: [{ text: "Hello! I'm Medimart AI, your friendly medical assistant. How can I help you today? You can ask me about medications, upload a prescription, or ask me to find a doctor nearby." }],
+      parts: [{ text: "Hello! I'm Medimart AI, your friendly medical assistant.\nHow can I help you today? You can ask me about medications, upload a prescription, or ask me to find a doctor nearby." }],
       timestamp: new Date(),
     },
   ]);
@@ -273,19 +272,19 @@ const App: React.FC = () => {
 
   if (hasKey === false) {
     return (
-      <div className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center p-8 text-center">
+      <div className="fixed inset-0 z-[200] bg-[#030a08] flex flex-col items-center justify-center p-8 text-center">
         <div className="w-24 h-24 mb-6">
           <MascotIcon />
         </div>
-        <h2 className="text-2xl font-extrabold text-slate-800 mb-4">Secure Setup Required</h2>
-        <p className="text-slate-600 mb-8 max-w-sm leading-relaxed">
+        <h2 className="text-2xl font-extrabold text-emerald-50 mb-4">Secure Setup Required</h2>
+        <p className="text-emerald-100/75 mb-8 max-w-sm leading-relaxed">
           Medimart AI uses advanced medical vision and voice processing. To enable these features, please complete the secure setup by selecting your project API key.
           <br/><br/>
-          <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="text-green-600 underline text-xs">Technical documentation</a>
+          <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="text-emerald-300 underline text-xs">Technical documentation</a>
         </p>
         <button 
           onClick={handleOpenKeySelector}
-          className="px-10 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 active:scale-95 transition-all flex items-center gap-3"
+          className="px-10 py-4 bg-emerald-400 text-[#03241a] rounded-2xl font-bold shadow-[0_0_25px_rgba(52,211,153,0.5)] hover:bg-emerald-300 active:scale-95 transition-all flex items-center gap-3"
         >
           <KeyIcon className="w-6 h-6" />
           Complete Setup
@@ -301,47 +300,45 @@ const App: React.FC = () => {
       {viewingImage && <ImageViewerModal src={viewingImage} onClose={() => setViewingImage(null)} />}
       {isVoiceAssistantOpen && <CameraVoiceAssistant onClose={() => setIsVoiceAssistantOpen(false)} />}
       
-      <div className="flex flex-col h-[100dvh] font-sans overflow-hidden">
-        <header className="p-3 md:p-4 flex items-center gap-3 sticky top-0 z-10 glassmorphism shrink-0">
-          <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-lg">
-            <SmileIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+      <div className="flex flex-col h-[100dvh] font-sans overflow-hidden app-shell-dark max-w-5xl mx-auto w-full relative">
+        <header className="px-5 py-4 flex items-center justify-between border-b border-emerald-400/20 glass-panel-dark shrink-0">
+          <div>
+            <h1 className="text-xl md:text-2xl font-semibold tracking-wide text-white">Medimart AI</h1>
+            <p className="text-xs text-emerald-200/85">Secure Connection</p>
           </div>
-          <div className="flex-1">
-            <h1 className="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight">Medimart AI</h1>
-            <p className="text-xs md:text-sm text-green-600 font-semibold flex items-center">
-              <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
-              Secure Connection
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <button 
-              onClick={handleOpenKeySelector}
-              className="p-3 bg-white shadow-md rounded-full text-slate-500 hover:text-green-600 active:scale-95 transition-all neumorphic-convex border border-green-50"
-              title="API Settings"
-            >
-              <KeyIcon className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => setIsVoiceAssistantOpen(true)}
-              className="p-3 bg-green-600 shadow-md rounded-full text-white hover:bg-green-700 active:scale-95 transition-all border border-green-400"
-              title="Voice Scan Assistant"
-            >
-              <CameraIcon className="w-5 h-5" />
-            </button>
-          </div>
+          <div className="vision-sync-pill">Vision Sync</div>
         </header>
-        
-        <main className="flex-1 overflow-y-auto p-3 md:p-6 space-y-6 md:space-y-8 pb-4 relative">
-          {/* Subtle Watermark */}
-          <div className="app-watermark"></div>
-          
-          <div className="relative z-10 space-y-6 md:space-y-8">
+
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-5 pb-24 relative">
+          <section className="scanner-frame relative overflow-hidden rounded-[2rem] border border-white/15 shadow-2xl">
+            <div className="absolute inset-0 scanner-overlay-grid"></div>
+            <div className="scan-bracket top-4 left-4"></div>
+            <div className="scan-bracket top-4 right-4 rotate-90"></div>
+            <div className="scan-bracket bottom-4 right-4 rotate-180"></div>
+            <div className="scan-bracket bottom-4 left-4 -rotate-90"></div>
+            <div className="scan-face-ring"></div>
+            <div className="scan-forehead-dot"></div>
+            <div className="scanner-watermark">MedimartAI</div>
+          </section>
+
+          <div className="flex flex-wrap gap-2 justify-center glass-panel-dark rounded-full p-2 border border-white/10">
+            {['AUTO', 'ENGLISH', 'HINDI', 'ASSAMESE'].map((lang) => (
+              <button
+                key={lang}
+                className="px-4 py-1.5 text-xs md:text-sm rounded-full bg-white/5 text-emerald-100 border border-white/10 hover:bg-emerald-400/20 transition-colors"
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+
+          <div className="space-y-4">
             {messages.map((msg, index) => (
-              <ChatMessage 
-                key={msg.id || index} 
-                message={msg} 
+              <ChatMessage
+                key={msg.id || index}
+                message={msg}
                 isLoading={msg.isLoading}
-                onTranslate={handleTranslate} 
+                onTranslate={handleTranslate}
                 onImageView={setViewingImage}
                 onFixKey={handleOpenKeySelector}
               />
@@ -349,22 +346,34 @@ const App: React.FC = () => {
           </div>
           <div ref={messagesEndRef} />
         </main>
-        
-        <footer className="p-2 sticky bottom-0 z-20 shrink-0 bg-white/30 backdrop-blur-md">
-          <div className="max-w-4xl mx-auto space-y-2">
-              <div className="grid grid-cols-2 gap-2 px-1">
-                  <button onClick={() => setIsFilterModalOpen(true)} className="flex items-center justify-center px-3 py-3 text-sm font-bold text-slate-700 neumorphic-convex">
-                      <MapPinIcon className="w-4 h-4 mr-1.5 text-green-500" />
-                      Find Doctor
-                  </button>
-                  <button onClick={() => setIsSuggestionModalOpen(true)} className="flex items-center justify-center px-3 py-3 text-sm font-bold text-slate-700 neumorphic-convex">
-                      <LightbulbIcon className="w-4 h-4 mr-1.5 text-yellow-500" />
-                      Compare
-                  </button>
-              </div>
-              <ChatInput onSend={handleSend} isLoading={isLoading} />
+
+        <footer className="p-3 pt-2 sticky bottom-0 z-20 shrink-0 bg-[#07110f]/80 backdrop-blur-xl border-t border-white/10">
+          <div className="max-w-4xl mx-auto space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              <button onClick={() => setIsFilterModalOpen(true)} className="action-pill-dark">
+                <MapPinIcon className="w-4 h-4 mr-1 text-emerald-300" />
+                Find Doctor
+              </button>
+              <button onClick={() => setIsSuggestionModalOpen(true)} className="action-pill-dark">
+                <LightbulbIcon className="w-4 h-4 mr-1 text-emerald-300" />
+                Compare Medicine
+              </button>
+              <button onClick={() => setIsVoiceAssistantOpen(true)} className="action-pill-dark">
+                <CameraIcon className="w-4 h-4 mr-1 text-emerald-300" />
+                Upload Prescription
+              </button>
+            </div>
+            <ChatInput onSend={handleSend} isLoading={isLoading} />
           </div>
         </footer>
+
+        <button
+          onClick={() => setIsVoiceAssistantOpen(true)}
+          className="mic-float-btn"
+          title="Voice Assistant"
+        >
+          <CameraIcon className="w-6 h-6" />
+        </button>
       </div>
     </>
   );
