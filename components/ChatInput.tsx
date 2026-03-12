@@ -67,10 +67,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, isLoading }) => {
   useEffect(adjustTextareaHeight, [text]);
 
   return (
-    <div className="glassmorphism rounded-2xl p-2 shadow-lg mx-1">
+    <div className="rounded-3xl p-2.5 shadow-[0_12px_30px_rgba(15,23,42,0.08)] mx-1 bg-white border border-slate-200">
       {file && (
         <div className="p-2 relative">
-          <div className="flex items-center gap-3 bg-slate-200/50 p-2 rounded-md">
+          <div className="flex items-center gap-3 bg-slate-100 p-2 rounded-xl">
             {preview ? (
               <img src={preview} alt="File preview" className="w-16 h-16 rounded-md object-cover"/>
             ) : (
@@ -89,12 +89,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, isLoading }) => {
         </div>
       )}
       <div className="flex items-end gap-2 p-1">
-        <label htmlFor="file-upload" className="p-3 text-slate-500 hover:text-green-600 cursor-pointer rounded-full hover:bg-slate-200/50 transition-colors touch-manipulation">
+        <label htmlFor="file-upload" className="p-3 text-slate-500 hover:text-emerald-600 cursor-pointer rounded-full hover:bg-slate-100 transition-colors touch-manipulation">
           <PaperclipIcon className="w-6 h-6" />
         </label>
         <input id="file-upload" type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
         
-        <div className="flex-1 neumorphic-concave p-1">
+        <div className="flex-1 rounded-2xl bg-slate-50 border border-slate-200 p-1">
           <textarea
             ref={textareaRef}
             value={text}
@@ -105,8 +105,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, isLoading }) => {
                 handleSend();
               }
             }}
-            placeholder="Ask me anything..."
-            className="w-full bg-transparent p-2 resize-none border-0 focus:ring-0 outline-none max-h-32 overflow-y-auto text-slate-800 placeholder-slate-500 text-base"
+            placeholder="Ask me anything…"
+            className="w-full bg-transparent p-2.5 resize-none border-0 focus:ring-0 outline-none max-h-32 overflow-y-auto text-slate-800 placeholder-slate-400 text-base"
             rows={1}
             disabled={isLoading}
             style={{ fontSize: '16px' }} // Explicitly set 16px to prevent iOS zoom
@@ -115,7 +115,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, isLoading }) => {
         <button 
           onClick={handleSend} 
           disabled={isLoading || (!text.trim() && !file)} 
-          className="p-3 rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:shadow-inner transition-all touch-manipulation"
+          className="p-3 rounded-full bg-emerald-500 text-white disabled:bg-slate-300 disabled:cursor-not-allowed shadow-sm hover:bg-emerald-600 transition-all touch-manipulation"
         >
           {isLoading ? (
              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

@@ -1,12 +1,10 @@
 
 import React from 'react';
 import { Message } from '../types';
-import { UserIcon } from './icons/UserIcon';
 import { marked } from 'marked';
 import { DoctorCard } from './DoctorCard';
 import { TranslateIcon } from './icons/TranslateIcon';
 import { WebIcon } from './icons/WebIcon';
-import { MascotIcon } from './icons/MascotIcon';
 import { SearchIcon } from './icons/SearchIcon';
 import { KeyIcon } from './icons/KeyIcon';
 import { MapPinIcon } from './icons/MapPinIcon';
@@ -51,15 +49,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLoading, on
   ) : null;
 
   return (
-    <div className={`flex items-end gap-3 ${isModel ? 'justify-start' : 'justify-end'}`}>
-      {isModel && (
-        <div className="flex-shrink-0 w-10 h-10 rounded-full neumorphic-convex flex items-center justify-center p-1">
-          <MascotIcon className="w-8 h-8" />
-        </div>
-      )}
-      
+    <div className={`flex items-end ${isModel ? 'justify-start' : 'justify-end'}`}>
       <div className={`max-w-2xl w-auto`}>
         <div className={`${isModel ? 'chat-bubble-model' : 'chat-bubble-user'} ${message.isPermissionError ? 'border-2 border-red-400 !bg-red-50 !text-red-900' : ''}`}>
+          {!isModel && (
+            <div className="flex justify-end mb-1">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
+                ✓ Sent
+              </span>
+            </div>
+          )}
           {isLoading ? (
               <div className="px-4 py-3 flex items-center gap-2">
                   <span className="w-2 h-2 bg-current opacity-50 rounded-full animate-pulse"></span>
@@ -168,11 +167,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLoading, on
         </p>
       </div>
 
-      {!isModel && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white">
-          <UserIcon className="w-5 h-5" />
-        </div>
-      )}
     </div>
   );
 };
